@@ -39,20 +39,29 @@ export default function SettingsPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-10 border-b bg-background">
-        <div className="container flex h-16 items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <Link href="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="h-4 w-4" />
-              <span>Back to Dashboard</span>
-            </Link>
-          </div>
-          <div className="flex items-center gap-2 font-semibold">
-            <Wallet className="h-5 w-5" />
-            <span>PropFlow</span>
-          </div>
-        </div>
-      </header>
+    <header className="sticky top-0 z-10 border-b bg-background">
+  <div className="container flex h-16 items-center justify-between px-4 sm:px-6 py-4 gap-2 flex-nowrap overflow-hidden">
+    
+    {/* Left: Back to Dashboard */}
+    <div className="flex items-center gap-2 min-w-0">
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-1 text-muted-foreground hover:text-foreground text-sm sm:text-base truncate"
+      >
+        <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+        <span className="truncate">Back to Dashboard</span>
+      </Link>
+    </div>
+
+    {/* Right: App Name */}
+    <div className="flex items-center gap-1 font-semibold text-sm sm:text-base min-w-0">
+      <Wallet className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+      <span className="truncate">PropFlow</span>
+    </div>
+
+  </div>
+</header>
+
       <main className="flex-1 bg-muted/50 pb-12">
         <div className="container py-6">
           <div className="mb-6">
@@ -61,21 +70,22 @@ export default function SettingsPage() {
           </div>
 
           <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-         <TabsList className="flex-wrap">
-  <TabsTrigger value="profile" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4">
+          <TabsList className="flex w-full">
+  <TabsTrigger value="profile" className="flex-1 flex items-center justify-center gap-1 px-1 sm:px-4">
     <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
     <span className="text-xs sm:text-sm">Profile</span>
   </TabsTrigger>
-  <TabsTrigger value="accounts" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4">
+  <TabsTrigger value="accounts" className="flex-1 flex items-center justify-center gap-1 px-1 sm:px-4">
     <CreditCard className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-    <span className="hidden xs:inline text-xs sm:text-sm">Connected Accounts</span>
+    <span className="hidden xs:inline text-xs sm:text-sm">Connected</span>
     <span className="xs:hidden text-xs sm:text-sm">Accounts</span>
   </TabsTrigger>
-  <TabsTrigger value="propfirms" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4">
+  <TabsTrigger value="propfirms" className="flex-1 flex items-center justify-center gap-1 px-1 sm:px-4">
     <Wallet className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-    <span className="text-xs sm:text-sm">Prop Firms</span>
+    <span className="hidden xs:inline text-xs sm:text-sm">Prop Firms</span>
+    <span className="xs:hidden text-xs sm:text-sm">Firms</span>
   </TabsTrigger>
-</TabsList>  
+</TabsList>
             <TabsContent value="profile" className="space-y-6">
               <Card>  
                 <CardHeader>
