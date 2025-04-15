@@ -423,7 +423,7 @@ export default function DashboardPage() {
   </SheetContent>
 </Sheet>
 
-        </div>
+        </div>  
       </div>
     </header>
         <main className="flex-1 bg-muted/50 pb-12 w-full">
@@ -454,11 +454,11 @@ export default function DashboardPage() {
       </Link>
     </Button>
 
-    {/* Date Filter Select - Compact on mobile */}
+    {/* Date Filter Select - FIXED to maintain consistent size across breakpoints */}
     <Select value={dateFilter} onValueChange={setDateFilter}>
-      <SelectTrigger className="h-8 w-[90px] sm:w-[160px] whitespace-nowrap">
+      <SelectTrigger className="h-8 w-[160px] whitespace-nowrap">
         <Calendar className="mr-1 h-3.5 w-3.5" />
-        <SelectValue placeholder="Period" className="text-xs sm:text-sm" />
+        <SelectValue placeholder="Period" className="text-sm" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="30d">Last 30 days</SelectItem>
@@ -638,29 +638,29 @@ export default function DashboardPage() {
 
             <Card className="mt-6">
             <CardHeader>
-  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+  <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
     {/* Left side: Title & Description */}
     <div>
-      <CardTitle>Recent Transactions</CardTitle>
-      <CardDescription>
+      <CardTitle className="text-xl">Recent Transactions</CardTitle>
+      <CardDescription className="text-sm">
         A list of your recent transactions across all prop firms
       </CardDescription>
     </div>
 
-    {/* Right side: Search + Buttons */}
-    <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4 w-full md:w-auto">
+    {/* Right side: Input + Buttons row */}
+    <div className="flex flex-col gap-2 w-full md:flex-row md:items-center md:gap-4 md:w-auto">
       {/* Search Input */}
       <div className="relative w-full md:w-[300px]">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
           placeholder="Search transactions..."
-          className="w-full pl-8"
+          className="w-full md:w-[300px] pl-8"
         />
       </div>
 
-      {/* Filter + Advanced Buttons */}
-      <div className="flex flex-wrap gap-2 md:flex-nowrap">
+      {/* Buttons */}
+      <div className="flex gap-2">
         <Button variant="outline" size="sm" className="h-9 gap-1">
           <Filter className="h-3.5 w-3.5" />
           <span>Filter</span>
@@ -689,6 +689,7 @@ export default function DashboardPage() {
     </div>
   </div>
 </CardHeader>
+
 
   <CardContent>
     {filteredTransactions.length > 0 ? (

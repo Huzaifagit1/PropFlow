@@ -134,99 +134,124 @@ export function PropFirmSettings() {
         <CardDescription>Select the prop firms you want to track in your dashboard</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            PropFlow scans your banking transactions for entries that include these firm names.
-          </p>
-          <div className="text-sm">
-            <span className="font-medium">{selectedCount}</span> /
-            <span>{user?.plan === "starter" ? "1" : user?.plan === "standard" ? "3" : "∞"}</span> selected
-          </div>
-        </div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+  <p className="text-xs sm:text-sm text-muted-foreground">
+    PropFlow scans your banking transactions for entries that include these firm names.
+  </p>
+  
+  <div className="text-xs sm:text-sm">
+    <span className="font-medium">{selectedCount}</span> /
+    <span>
+      {user?.plan === "starter"
+        ? "1"
+        : user?.plan === "standard"
+        ? "3"
+        : "∞"}
+    </span>{" "}
+    selected
+  </div>
+</div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {pendingPropFirms.map((firm) => (
-           <div
-           key={firm.id}
-           className={`flex flex-col md:flex-row md:items-center md:space-x-3 rounded-md border p-4 ${
-             !firm.isSelected && hasReachedLimit() ? "opacity-50" : ""
-           }`}
-         >
-           <Checkbox
-             id={`firm-${firm.id}`}
-             checked={firm.isSelected}
-             onCheckedChange={() => handleToggle(firm.id, firm.isSelected)}
-             disabled={!firm.isSelected && hasReachedLimit()}
-             className="shrink-0"
-           />
-         
-           <div className="mt-2 md:mt-0 space-y-1">
-             <label
-               htmlFor={`firm-${firm.id}`}
-               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-             >
-               {firm.name}{" "}
-               {firm.isCustom && <span className="text-xs text-muted-foreground">(Custom)</span>}
-             </label>
-             <p className="text-xs text-muted-foreground break-words">{firm.description}</p>
-           </div>
-         </div>
-         
-          ))}
-        </div>
+
+<div className="grid gap-4 md:grid-cols-2">
+  {pendingPropFirms.map((firm) => (
+    <div
+      key={firm.id}
+      className={`flex items-start gap-3 rounded-md border p-4 ${
+        !firm.isSelected && hasReachedLimit() ? "opacity-50" : ""
+      }`}
+    >
+      <Checkbox
+        id={`firm-${firm.id}`}
+        checked={firm.isSelected}
+        onCheckedChange={() => handleToggle(firm.id, firm.isSelected)}
+        disabled={!firm.isSelected && hasReachedLimit()}
+        className="mt-1 shrink-0"
+      />
+
+      <div className="space-y-0.5">
+        <label
+          htmlFor={`firm-${firm.id}`}
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          {firm.name}{" "}
+          {firm.isCustom && (
+            <span className="text-xs text-muted-foreground">(Custom)</span>
+          )}
+        </label>
+        <p className="text-xs text-muted-foreground break-words">
+          {firm.description}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
+
 
         <div
           className={`rounded-md ${isFeatureAvailable("premium") ? "bg-muted" : "bg-muted/50 border border-dashed"} p-4`}
         >
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="text-sm font-medium flex items-center gap-2">
-              {!isFeatureAvailable("premium") && <Lock className="h-3.5 w-3.5" />}
-              Add Custom Prop Firm
-              {!isFeatureAvailable("premium") && (
-                <span className="text-xs text-muted-foreground">(Premium Feature)</span>
-              )}
-            </h4>
+         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-3">
+  <h4 className="text-sm font-medium flex flex-col md:flex-row md:items-center gap-1.5 md:gap-2">
+    {!isFeatureAvailable("premium") && <Lock className="h-3.5 w-3.5" />}
+    <span>Add Custom Prop Firm</span>
+    {!isFeatureAvailable("premium") && (
+      <span className="text-xs text-muted-foreground md:ml-1">
+        (Premium Feature)
+      </span>
+    )}
+  </h4>
 
-            {!isFeatureAvailable("premium") && (
-              <Button size="sm" variant="outline" asChild>
-                <Link href="/pricing">
-                  <Crown className="mr-1.5 h-3.5 w-3.5" />
-                  Upgrade
-                </Link>
-              </Button>
-            )}
-          </div>
+  {!isFeatureAvailable("premium") && (
+    <Button size="sm" variant="outline" asChild className="w-full md:w-auto">
+      <Link href="/pricing" className="flex items-center justify-center">
+        <Crown className="mr-1.5 h-3.5 w-3.5" />
+        Upgrade
+      </Link>
+    </Button>
+  )}
+</div>
 
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Input
-                type="text"
-                placeholder="Firm name (e.g. My Custom Firm)"
-                className="max-w-sm"
-                value={newFirmName}
-                onChange={(e) => setNewFirmName(e.target.value)}
-                disabled={!isFeatureAvailable("premium")}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Input
-                type="text"
-                placeholder="Transaction keyword (e.g. MYCUSTOM)"
-                className="max-w-sm"
-                value={newFirmKeyword}
-                onChange={(e) => setNewFirmKeyword(e.target.value)}
-                disabled={!isFeatureAvailable("premium")}
-              />
-              <Button
-                type="button"
-                size="sm"
-                onClick={handleAddCustomFirm}
-                disabled={!isFeatureAvailable("premium") || !newFirmName.trim() || !newFirmKeyword.trim()}
-              >
-                Add Custom
-              </Button>
-            </div>
-          </div>
+
+<div className="space-y-3">
+  {/* First input */}
+  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+    <Input
+      type="text"
+      placeholder="Firm name (e.g. My Custom Firm)"
+      className="w-full sm:max-w-sm text-[9px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2"
+      value={newFirmName}
+      onChange={(e) => setNewFirmName(e.target.value)}
+      disabled={!isFeatureAvailable("premium")}
+    />
+  </div>
+
+  {/* Second input + button */}
+  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+    <Input
+      type="text"
+      placeholder="Transaction keyword (e.g. MYCUSTOM)"
+      className="w-full sm:max-w-sm text-[9px] sm:text-xs px-2 py-1 sm:px-3 sm:py-2"
+      value={newFirmKeyword}
+      onChange={(e) => setNewFirmKeyword(e.target.value)}
+      disabled={!isFeatureAvailable("premium")}
+    />
+    <Button
+      type="button"
+      size="sm"
+      onClick={handleAddCustomFirm}
+      disabled={
+        !isFeatureAvailable("premium") ||
+        !newFirmName.trim() ||
+        !newFirmKeyword.trim()
+      }
+      className="w-full sm:w-auto"
+    >
+      Add Custom
+    </Button>
+  </div>
+</div>
+
 
           <p className="mt-2 text-xs text-muted-foreground">
             Add custom prop firm names if they're not in the list above
@@ -254,26 +279,42 @@ export function PropFirmSettings() {
           Some selected firms are not shown.
         </p>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <div className="flex gap-2">
-          {hasPendingChanges && (
-            <Button variant="outline" onClick={discardChanges} disabled={isSaving || !hasPendingChanges}>
-              Cancel
-            </Button>
-          )}
-          <Button onClick={handleSavePreferences} disabled={isSaving || !hasPendingChanges}>
-            {isSaving ? (
-              <>
-                <Check className="mr-2 h-4 w-4" /> Saved
-              </>
-            ) : (
-              "Save Preferences"
-            )}
-          </Button>
-        </div>
+      <CardFooter className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
+  {/* Buttons section */}
+  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+    {hasPendingChanges && (
+      <Button
+        variant="outline"
+        onClick={discardChanges}
+        disabled={isSaving || !hasPendingChanges}
+        className="w-full sm:w-auto"
+      >
+        Cancel
+      </Button>
+    )}
+    <Button
+      onClick={handleSavePreferences}
+      disabled={isSaving || !hasPendingChanges}
+      className="w-full sm:w-auto"
+    >
+      {isSaving ? (
+        <>
+          <Check className="mr-2 h-4 w-4" /> Saved
+        </>
+      ) : (
+        "Save Preferences"
+      )}
+    </Button>
+  </div>
 
-        {hasPendingChanges && <p className="text-xs text-muted-foreground self-center">You have unsaved changes</p>}
-      </CardFooter>
+  {/* Unsaved changes message */}
+  {hasPendingChanges && (
+    <p className="text-[10px] text-muted-foreground sm:text-xs sm:self-center">
+      You have unsaved changes
+    </p>
+  )}
+</CardFooter>
+
     </Card>
   )
 }
