@@ -428,66 +428,65 @@ export default function DashboardPage() {
     </header>
         <main className="flex-1 bg-muted/50 pb-12 w-full">
           <div className="container py-6">
-            <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-              <div>
-                <h1 className="text-2xl font-bold tracking-tight">Welcome back, {user?.name}</h1>
-                <p className="text-muted-foreground">Here's an overview of your prop firm activity</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-  {/* Prop Firms Badge - Always visible */}
-  <Badge variant="outline" className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5">
-    <CreditCard className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground" />
-    <span className="text-xs font-medium">
-      <span className="hidden xs:inline">
-        {selectedPropFirms.length} Prop {selectedPropFirms.length === 1 ? "Firm" : "Firms"}
+          <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+  <div>
+    <h1 className="text-2xl font-bold tracking-tight">Welcome back, {user?.name}</h1>
+    <p className="text-muted-foreground">Here's an overview of your prop firm activity</p>
+  </div>
+  <div className="flex items-center space-x-2">
+    {/* Prop Firms Badge - Always visible */}
+    <Badge variant="outline" className="flex items-center gap-1 px-2 py-1 whitespace-nowrap">
+      <CreditCard className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground" />
+      <span className="text-xs font-medium">
+        <span className="hidden xs:inline">
+          {selectedPropFirms.length} Prop {selectedPropFirms.length === 1 ? "Firm" : "Firms"}
+        </span>
+        <span className="xs:hidden">{selectedPropFirms.length}</span>
+        {user?.plan === "starter" ? " (1 max)" : user?.plan === "standard" ? " (3 max)" : ""}
       </span>
-      <span className="xs:hidden">{selectedPropFirms.length}</span>
-      {user?.plan === "starter" ? " (1 max)" : user?.plan === "standard" ? " (3 max)" : ""}
-    </span>
-  </Badge>
+    </Badge>
 
-  {/* Manage Firms Button - Icon only on small screens */}
-  <Button variant="outline" size="sm" className="gap-1.5" asChild>
-    <Link href="/settings?tab=propfirms">
-      <Settings className="h-3.5 w-3.5" />
-      <span className="hidden sm:inline">Manage Firms</span>
-    </Link>
-  </Button>
+    {/* Manage Firms Button - Icon only on small screens */}
+    <Button variant="outline" size="sm" className="h-8 px-2 sm:px-3 whitespace-nowrap" asChild>
+      <Link href="/settings?tab=propfirms">
+        <Settings className="h-3.5 w-3.5" />
+        <span className="hidden sm:inline ml-1">Manage Firms</span>
+      </Link>
+    </Button>
 
-  {/* Date Filter Select - Compact on mobile */}
-  <Select value={dateFilter} onValueChange={setDateFilter}>
-    <SelectTrigger className="w-[120px] sm:w-[180px]">
-      <Calendar className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-      <SelectValue placeholder="Period" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="30d">Last 30 days</SelectItem>
-      <SelectItem value="3m" disabled={!isFeatureAvailable("basic")}>
-        {!isFeatureAvailable("basic") && <Lock className="mr-2 h-3 w-3" />}
-        Last 3 months
-      </SelectItem>
-      <SelectItem value="6m" disabled={!isFeatureAvailable("basic")}>
-        {!isFeatureAvailable("basic") && <Lock className="mr-2 h-3 w-3" />}
-        Last 6 months
-      </SelectItem>
-      <SelectItem value="ytd" disabled={!isFeatureAvailable("pro")}>
-        {!isFeatureAvailable("pro") && <Lock className="mr-2 h-3 w-3" />}
-        Year to date
-      </SelectItem>
-      <SelectItem value="custom" disabled={!isFeatureAvailable("pro")}>
-        {!isFeatureAvailable("pro") && <Lock className="mr-2 h-3 w-3" />}
-        Custom range
-      </SelectItem>
-    </SelectContent>
-  </Select>
+    {/* Date Filter Select - Compact on mobile */}
+    <Select value={dateFilter} onValueChange={setDateFilter}>
+      <SelectTrigger className="h-8 w-[90px] sm:w-[160px] whitespace-nowrap">
+        <Calendar className="mr-1 h-3.5 w-3.5" />
+        <SelectValue placeholder="Period" className="text-xs sm:text-sm" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="30d">Last 30 days</SelectItem>
+        <SelectItem value="3m" disabled={!isFeatureAvailable("basic")}>
+          {!isFeatureAvailable("basic") && <Lock className="mr-2 h-3 w-3" />}
+          Last 3 months
+        </SelectItem>
+        <SelectItem value="6m" disabled={!isFeatureAvailable("basic")}>
+          {!isFeatureAvailable("basic") && <Lock className="mr-2 h-3 w-3" />}
+          Last 6 months
+        </SelectItem>
+        <SelectItem value="ytd" disabled={!isFeatureAvailable("pro")}>
+          {!isFeatureAvailable("pro") && <Lock className="mr-2 h-3 w-3" />}
+          Year to date
+        </SelectItem>
+        <SelectItem value="custom" disabled={!isFeatureAvailable("pro")}>
+          {!isFeatureAvailable("pro") && <Lock className="mr-2 h-3 w-3" />}
+          Custom range
+        </SelectItem>
+      </SelectContent>
+    </Select>
 
-  {/* Export Button - Always visible as icon */}
-  <Button variant="outline" size="icon" onClick={() => setExportDialogOpen(true)}>
-    <Download className="h-4 w-4" />
-  </Button>
+    {/* Export Button - Always visible as icon */}
+    <Button variant="outline" size="icon" className="h-8 w-8 flex-shrink-0" onClick={() => setExportDialogOpen(true)}>
+      <Download className="h-4 w-4" />
+    </Button>
+  </div>
 </div>
-            </div>
-
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
